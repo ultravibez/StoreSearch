@@ -43,6 +43,9 @@ class SearchViewController: UIViewController {
         // creating the custom no results cell
         cellNib = UINib(nibName: TableViewCellIdentifiers.nothingFoundCell, bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
+        
+        // making the keyboard visiable, can start typing right away
+        searchBar.becomeFirstResponder()
     }
     
 }
@@ -66,7 +69,7 @@ extension SearchViewController: UISearchBarDelegate {
         tableView.reloadData()
     }
     
-    // extends the search bar to status bar area, making it grey.
+    // extends the search bar to the status bar area, making it grey.
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
@@ -106,6 +109,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        // disables selecting a non existing cell
         if searchResults.count == 0 {
             return nil
         } else {

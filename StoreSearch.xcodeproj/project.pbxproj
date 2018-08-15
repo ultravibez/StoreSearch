@@ -90,9 +90,8 @@
 		9039503321230F3B00BF048D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9039503D21237BFE00BF048D /* NothingFoundCell.xib */,
-				9039503921234FA100BF048D /* SearchResultCell.swift */,
-				903950352123446200BF048D /* SearchResultCell.xib */,
+				90395040212443C100BF048D /* Custom NothingFoundCell */,
+				9039503F212443B300BF048D /* Custom SearchResultCell */,
 				903950212122FD4100BF048D /* Main.storyboard */,
 				903950262122FD4300BF048D /* LaunchScreen.storyboard */,
 			);
@@ -106,6 +105,23 @@
 				903950242122FD4300BF048D /* Assets.xcassets */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		9039503F212443B300BF048D /* Custom SearchResultCell */ = {
+			isa = PBXGroup;
+			children = (
+				9039503921234FA100BF048D /* SearchResultCell.swift */,
+				903950352123446200BF048D /* SearchResultCell.xib */,
+			);
+			path = "Custom SearchResultCell";
+			sourceTree = "<group>";
+		};
+		90395040212443C100BF048D /* Custom NothingFoundCell */ = {
+			isa = PBXGroup;
+			children = (
+				9039503D21237BFE00BF048D /* NothingFoundCell.xib */,
+			);
+			path = "Custom NothingFoundCell";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
