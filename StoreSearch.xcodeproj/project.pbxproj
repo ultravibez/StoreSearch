@@ -16,6 +16,7 @@
 		903950362123446200BF048D /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903950352123446200BF048D /* SearchResultCell.xib */; };
 		9039503A21234FA100BF048D /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9039503921234FA100BF048D /* SearchResultCell.swift */; };
 		9039503E21237BFE00BF048D /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9039503D21237BFE00BF048D /* NothingFoundCell.xib */; };
+		903950422125DD7700BF048D /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903950412125DD7700BF048D /* LoadingCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		903950352123446200BF048D /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		9039503921234FA100BF048D /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		9039503D21237BFE00BF048D /* NothingFoundCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		903950412125DD7700BF048D /* LoadingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			children = (
 				90395040212443C100BF048D /* Custom NothingFoundCell */,
 				9039503F212443B300BF048D /* Custom SearchResultCell */,
+				903950432125DD7F00BF048D /* Custom LoadingCell */,
 				903950212122FD4100BF048D /* Main.storyboard */,
 				903950262122FD4300BF048D /* LaunchScreen.storyboard */,
 			);
@@ -122,6 +125,14 @@
 				9039503D21237BFE00BF048D /* NothingFoundCell.xib */,
 			);
 			path = "Custom NothingFoundCell";
+			sourceTree = "<group>";
+		};
+		903950432125DD7F00BF048D /* Custom LoadingCell */ = {
+			isa = PBXGroup;
+			children = (
+				903950412125DD7700BF048D /* LoadingCell.xib */,
+			);
+			path = "Custom LoadingCell";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,6 +195,7 @@
 			files = (
 				903950282122FD4300BF048D /* LaunchScreen.storyboard in Resources */,
 				903950252122FD4300BF048D /* Assets.xcassets in Resources */,
+				903950422125DD7700BF048D /* LoadingCell.xib in Resources */,
 				903950362123446200BF048D /* SearchResultCell.xib in Resources */,
 				9039503E21237BFE00BF048D /* NothingFoundCell.xib in Resources */,
 				903950232122FD4100BF048D /* Main.storyboard in Resources */,

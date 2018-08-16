@@ -14,6 +14,7 @@ class SearchViewController: UIViewController {
     struct TableViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
         static let nothingFoundCell = "NothingFoundCell"
+        static let loadingCell = "LoadingCell"
     }
     
     // MARK: - Outelets
@@ -23,6 +24,7 @@ class SearchViewController: UIViewController {
     // MARK: - Vairables and constants
     var searchResults = [SearchResult]()
     var hasSearched = false
+    var isLoading = false
     
     // MARK: - View handler Methods
     override func viewDidLoad() {
@@ -43,17 +45,21 @@ class SearchViewController: UIViewController {
         cellNib = UINib(nibName: TableViewCellIdentifiers.nothingFoundCell, bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
         
-        // making the keyboard visiable, can start typing right away
+        // creating the custom loading cell
+        cellNib = UINib(nibName: TableViewCellIdentifiers.loadingCell, bundle: nil)
+        tableView.register(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
+        
+        // making the keyboard visible, can start typing right away
         searchBar.becomeFirstResponder()
     }
     
     // MARK: - Private Methods
     func iTunesURL(searchText: String) -> URL {
         // encodes the text, changing SPACE with %20 instead.
-        // making it a formatted url
+        // making it a valid url
         let encodedText = searchText.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        // the %@ part refers to the argument of type string
-        let urlString = String(format: "https://itunes.apple.com/search?term=%@", encodedText)
+        // the %@ part refers to the argument of type String
+        let urlString = String(format: "https://itunes.apple.com/search?term=%@&limit=200", encodedText)
         let url = URL(string: urlString)
         return url!
     }
@@ -98,18 +104,29 @@ extension SearchViewController: UISearchBarDelegate {
         if !searchBar.text!.isEmpty {
             searchBar.resignFirstResponder()
             
+            // changing isLoading to true to activate the spinner
+            isLoading = true
+            tableView.reloadData()
+
             hasSearched = true
             searchResults = []
             
-            let url = iTunesURL(searchText: searchBar.text!)
-            print("URL: '\(url)'")
+            let url = self.iTunesURL(searchText: searchBar.text!)
             
-            if let data = performStoreRequest(with: url) {
-                searchResults = parse(data: data)
-                searchResults.sort(by: < )
+            let queue = DispatchQueue.global()
+            
+            queue.async {
+                if let data = self.performStoreRequest(with: url) {
+                    self.searchResults = self.parse(data: data)
+                    self.searchResults.sort(by: < )
+                    
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.tableView.reloadData()
+                    }
+                    return
+                }
             }
-            
-            tableView.reloadData()
         }
     }
     
@@ -124,10 +141,14 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if !hasSearched {
+        if isLoading {
+            // returns the loading cell
+            return 1
+        } else if !hasSearched {
+            // no search has been done so returns nothing
             return 0
-        }
-        else if searchResults.count == 0 {
+        } else if searchResults.count == 0 {
+            // search has been done but no results
             return 1
         } else {
             return searchResults.count
@@ -136,11 +157,18 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if searchResults.count == 0 {
+        if isLoading {
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.loadingCell, for: indexPath)
+            
+            // look up the spinnner by it's tag
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            spinner.startAnimating()
+            return cell
+        } else if searchResults.count == 0 {
             return tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.nothingFoundCell, for: indexPath)
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
-
+            
             let searchResult = searchResults[indexPath.row]
             cell.nameLabel.text = searchResult.name
             if searchResult.artistName.isEmpty {
@@ -158,7 +186,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // disables selecting a non existing cell
-        if searchResults.count == 0 {
+        if searchResults.count == 0 || isLoading {
             return nil
         } else {
             return indexPath
