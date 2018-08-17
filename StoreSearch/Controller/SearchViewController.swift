@@ -25,6 +25,7 @@ class SearchViewController: UIViewController {
     var searchResults = [SearchResult]()
     var hasSearched = false
     var isLoading = false
+    var dataTask: URLSessionDataTask?
     
     // MARK: - View handler Methods
     override func viewDidLoad() {
@@ -96,6 +97,11 @@ extension SearchViewController: UISearchBarDelegate {
         if !searchBar.text!.isEmpty {
             searchBar.resignFirstResponder()
             
+            // if there is an active data task, this cancels it,
+            // making sure that no old searches can ever get in the
+            // way of the new search.
+            dataTask?.cancel()
+            
             // changing isLoading to true to activate the spinner
             isLoading = true
             tableView.reloadData()
@@ -107,12 +113,13 @@ extension SearchViewController: UISearchBarDelegate {
             
             let session = URLSession.shared
             
-            let dataTask = session.dataTask(with: url, completionHandler: {
+            dataTask = session.dataTask(with: url, completionHandler: {
                 data, response, error in
                 
                 // error
-                if let error = error {
+                if let error = error as NSError?, error.code == -999 {
                     print("Failure! \(error)")
+                    return
                     
                 // no error and valid statusCode
                 } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
@@ -143,7 +150,7 @@ extension SearchViewController: UISearchBarDelegate {
                     self.showNetworkError()
                 }
             })
-            dataTask.resume()
+            dataTask?.resume()
         }
     }
     
