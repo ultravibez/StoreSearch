@@ -64,15 +64,7 @@ class SearchViewController: UIViewController {
         return url!
     }
     
-    func performStoreRequest(with url: URL) -> Data? {
-        do {
-            return try Data(contentsOf: url)
-        } catch {
-            print("Download Error: \(error.localizedDescription)")
-            showNetworkError()
-            return nil
-        }
-    }
+    
     
     func parse(data: Data) -> [SearchResult] {
         do {
@@ -113,20 +105,45 @@ extension SearchViewController: UISearchBarDelegate {
             
             let url = self.iTunesURL(searchText: searchBar.text!)
             
-            let queue = DispatchQueue.global()
+            let session = URLSession.shared
             
-            queue.async {
-                if let data = self.performStoreRequest(with: url) {
-                    self.searchResults = self.parse(data: data)
-                    self.searchResults.sort(by: < )
+            let dataTask = session.dataTask(with: url, completionHandler: {
+                data, response, error in
+                
+                // error
+                if let error = error {
+                    print("Failure! \(error)")
                     
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                        self.tableView.reloadData()
+                // no error and valid statusCode
+                } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    
+                    if let data = data {
+                        self.searchResults = self.parse(data: data)
+                        self.searchResults.sort(by: < )
+                        
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                            self.tableView.reloadData()
+                        }
+                        // we use return to avoid getting to the error popup below
+                        return
                     }
-                    return
+                    
+                // no error but invalid statusCode
+                } else {
+                    print("Failure! \(response!)")
                 }
-            }
+                
+                // the code execustion reaches here only if something
+                // went wrong.
+                DispatchQueue.main.async {
+                    self.hasSearched = false
+                    self.isLoading = false
+                    self.tableView.reloadData()
+                    self.showNetworkError()
+                }
+            })
+            dataTask.resume()
         }
     }
     
