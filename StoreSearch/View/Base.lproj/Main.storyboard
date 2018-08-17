@@ -33,13 +33,37 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="Dzt-cK-QPM"/>
                                 </connections>
                             </searchBar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0nn-ho-r5F">
+                                <rect key="frame" x="0.0" y="76" width="320" height="44"/>
+                                <items>
+                                    <navigationItem id="tEj-xX-YPK">
+                                        <nil key="title"/>
+                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="Ma9-Zz-A5Q">
+                                            <rect key="frame" x="8" y="7" width="304" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <segments>
+                                                <segment title="All"/>
+                                                <segment title="Music"/>
+                                                <segment title="Software"/>
+                                                <segment title="E-books"/>
+                                            </segments>
+                                            <connections>
+                                                <action selector="segmentChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="hZD-bo-4Wl"/>
+                                            </connections>
+                                        </segmentedControl>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="XGt-fy-l2H" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="3zn-Eh-l4K"/>
                             <constraint firstItem="QW5-NK-E1B" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="FpF-cH-qYH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QW5-NK-E1B" secondAttribute="bottom" id="Z87-HA-ceN"/>
+                            <constraint firstItem="0nn-ho-r5F" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="bgv-n5-VNg"/>
+                            <constraint firstItem="0nn-ho-r5F" firstAttribute="top" secondItem="XGt-fy-l2H" secondAttribute="bottom" id="deA-R2-5jP"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QW5-NK-E1B" secondAttribute="trailing" id="eJb-ow-mbt"/>
+                            <constraint firstItem="0nn-ho-r5F" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fjh-tp-n0m"/>
                             <constraint firstItem="QW5-NK-E1B" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="gQ7-gA-eQv"/>
                             <constraint firstItem="XGt-fy-l2H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="uCj-kb-Utc"/>
                             <constraint firstItem="XGt-fy-l2H" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="uQZ-qz-QsL"/>
@@ -48,6 +72,7 @@
                     </view>
                     <connections>
                         <outlet property="searchBar" destination="XGt-fy-l2H" id="jRn-Yy-SVg"/>
+                        <outlet property="segmentedControl" destination="Ma9-Zz-A5Q" id="rQg-HC-MOO"/>
                         <outlet property="tableView" destination="QW5-NK-E1B" id="yMN-qj-n5k"/>
                     </connections>
                 </viewController>
