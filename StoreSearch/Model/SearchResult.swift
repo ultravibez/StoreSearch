@@ -50,8 +50,12 @@ class SearchResult: Codable, CustomStringConvertible {
         return trackViewUrl ?? collectionViewUrl ?? ""
     }
     
+    var price: Double {
+        return trackPrice ?? collectionPrice ?? itemPrice ?? 0.0
+    }
+    
     var type: String {
-        let kind = self.kind ?? "audiobook"
+        let kind = self.kind
         switch kind {
         case "album": return "Album"
         case "audiobook": return "Audio Book"
