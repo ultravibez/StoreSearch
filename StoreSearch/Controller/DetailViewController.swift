@@ -95,7 +95,7 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
         formatter.currencyCode = searchResult.currency
         
         let priceText: String
-        if searchResult.itemPrice == 0 {
+        if searchResult.price <= 0 {
             priceText = "Free"
         // formatter returns nil if not given actual number, so we unwrap it.
         } else if let text = formatter.string(from: searchResult.price as NSNumber) {
