@@ -27,10 +27,18 @@ class SearchViewController: UIViewController {
     var hasSearched = false
     var isLoading = false
     var dataTask: URLSessionDataTask?
+    var observer: Any!
+    
+    deinit {
+        print("*** deinit \(self)")
+        NotificationCenter.default.removeObserver(observer)
+    }
     
     // MARK: - View handler Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        listenForBackgroundNotification()
         
         tableView.rowHeight = 80
         
@@ -82,8 +90,6 @@ class SearchViewController: UIViewController {
         return url!
     }
     
-    
-    
     func parse(data: Data) -> [SearchResult] {
         do {
             let decoder = JSONDecoder()
@@ -92,6 +98,13 @@ class SearchViewController: UIViewController {
         } catch {
             print("JSON Error: \(error)")
             return []
+        }
+    }
+    
+    func listenForBackgroundNotification() {
+        observer = NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: OperationQueue.main) { [unowned self] notifiation in
+            self.tableView.reloadData()
+            print("\(notifiation)")
         }
     }
     

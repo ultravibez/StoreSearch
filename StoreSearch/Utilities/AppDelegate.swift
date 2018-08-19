@@ -48,7 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window!.tintColor = UIColor(red: 10/255, green: 80/255, blue: 80/255, alpha: 1)
     }
-
-
+    
 }
 

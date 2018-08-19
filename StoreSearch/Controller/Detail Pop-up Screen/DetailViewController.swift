@@ -36,9 +36,17 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
         // cancel the download.
         downloadTask?.cancel()
     }
+    
+    // MARK: - Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // to avoid from gradiant color multiplying the opacity
+        // making it blacker than it actually is
+        // why not storyboard? because it makes it harder
+        // to see and edit the pop-up view.
+        view.backgroundColor = UIColor.clear
         
         // change the view tint color
         view.tintColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1)
@@ -64,6 +72,15 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
     // standard presentation controller.
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return DimmingPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+    
+    // MARK: - Animations
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BounceAnimationController()
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideOutAnimationController()
     }
     
     // MARK: - Actions Methods
