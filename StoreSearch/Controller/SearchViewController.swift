@@ -11,7 +11,7 @@ import UIKit
 class SearchViewController: UIViewController {
     
     // MARK: - TableViewCellIdentifiers
-    struct TableViewCellIdentifiers {
+    private struct TableViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
         static let nothingFoundCell = "NothingFoundCell"
         static let loadingCell = "LoadingCell"
@@ -23,22 +23,15 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Vairables and constants
-    var searchResults = [SearchResult]()
-    var hasSearched = false
-    var isLoading = false
-    var dataTask: URLSessionDataTask?
-    var observer: Any!
-    
-    deinit {
-        print("*** deinit \(self)")
-        NotificationCenter.default.removeObserver(observer)
-    }
+    private var searchResults = [SearchResult]()
+    private var hasSearched = false
+    private var isLoading = false
+    private var dataTask: URLSessionDataTask?
+    private var landscapeVC: LandscapeViewController?
     
     // MARK: - View handler Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        listenForBackgroundNotification()
         
         tableView.rowHeight = 80
         
@@ -68,9 +61,56 @@ class SearchViewController: UIViewController {
         performSearch()
     }
     
+    //MARK: - Rotation to landscape handlers
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        
+        switch newCollection.verticalSizeClass {
+        case.compact:
+            showLandScape(with: coordinator)
+        case .regular, .unspecified:
+            hideLandScape(with: coordinator)
+        }
+    }
+    
+    private func showLandScape(with coordinator: UIViewControllerTransitionCoordinator) {
+        guard landscapeVC == nil else { return }
+        
+        landscapeVC = storyboard!.instantiateViewController(withIdentifier: "LandscapeViewController") as? LandscapeViewController
+        if let controller = landscapeVC {
+            controller.searchResults = searchResults
+            controller.view.frame = view.bounds
+            controller.view.alpha = 0
+            
+            view.addSubview(controller.view)
+            addChildViewController(controller)
+            coordinator.animate(alongsideTransition: { _ in
+                controller.view.alpha = 1
+                self.searchBar.resignFirstResponder()
+                if self.presentedViewController != nil {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }, completion: { _ in
+                controller.didMove(toParentViewController: self)
+            })
+        }
+    }
+    
+    private func hideLandScape(with coordinator: UIViewControllerTransitionCoordinator) {
+        if let controller = landscapeVC {
+            controller.willMove(toParentViewController: nil)
+            coordinator.animate(alongsideTransition: { _ in
+                controller.view.alpha = 0
+            }, completion: { _ in
+                controller.view.removeFromSuperview()
+                controller.removeFromParentViewController()
+                self.landscapeVC = nil
+            })
+        }
+    }
     
     // MARK: - Private Methods
-    func iTunesURL(searchText: String, category: Int) -> URL {
+    private func iTunesURL(searchText: String, category: Int) -> URL {
         
         let kind: String
         switch category {
@@ -90,7 +130,7 @@ class SearchViewController: UIViewController {
         return url!
     }
     
-    func parse(data: Data) -> [SearchResult] {
+    private func parse(data: Data) -> [SearchResult] {
         do {
             let decoder = JSONDecoder()
             let result = try decoder.decode(ResultArray.self, from: data)
@@ -101,15 +141,8 @@ class SearchViewController: UIViewController {
         }
     }
     
-    func listenForBackgroundNotification() {
-        observer = NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: OperationQueue.main) { [unowned self] notifiation in
-            self.tableView.reloadData()
-            print("\(notifiation)")
-        }
-    }
-    
     // MARK: - Alert
-    func showNetworkError() {
+    private func showNetworkError() {
         let alert = UIAlertController(title: "Whoops...", message: "There was an error accessing the iTunes Store. Please try again.", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -126,7 +159,7 @@ extension SearchViewController: UISearchBarDelegate {
         performSearch()
     }
     
-    func performSearch() {
+    private func performSearch() {
         if !searchBar.text!.isEmpty {
             searchBar.resignFirstResponder()
             
@@ -238,6 +271,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         performSegue(withIdentifier: "ShowDetail", sender: indexPath)
     }
     
+    // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowDetail" {
             let detailViewController = segue.destination as! DetailViewController

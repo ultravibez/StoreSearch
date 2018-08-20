@@ -16,7 +16,7 @@ class SearchResultCell: UITableViewCell {
     @IBOutlet weak var artworkImageView: UIImageView!
     
     // MARK: - Variables
-    var downloadTask: URLSessionDownloadTask?
+    private var downloadTask: URLSessionDownloadTask?
     
 
     override func awakeFromNib() {

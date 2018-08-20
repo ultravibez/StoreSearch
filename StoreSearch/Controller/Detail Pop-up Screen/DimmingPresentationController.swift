@@ -17,7 +17,7 @@ class DimmingPresentationController: UIPresentationController {
     
     // we only wanna load it once and reuse it later,
     // that's why it's lazy.
-    lazy var dimmingView = GradientView(frame: CGRect.zero)
+    private lazy var dimmingView = GradientView(frame: CGRect.zero)
     
     // triggered when new view controller is about to be
     // shown on the screen.

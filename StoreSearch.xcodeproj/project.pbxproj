@@ -22,6 +22,8 @@
 		9039504D2129D1A400BF048D /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9039504C2129D1A400BF048D /* GradientView.swift */; };
 		9039504F2129D93800BF048D /* BounceAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9039504E2129D93800BF048D /* BounceAnimationController.swift */; };
 		903950512129E1DA00BF048D /* SlideOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903950502129E1DA00BF048D /* SlideOutAnimationController.swift */; };
+		90395055212AE1EC00BF048D /* LandscapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90395054212AE1EC00BF048D /* LandscapeViewController.swift */; };
+		90395075212AFAB600BF048D /* FadeOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90395074212AFAB600BF048D /* FadeOutAnimationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		9039504C2129D1A400BF048D /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GradientView.swift; path = StoreSearch/View/GradientView.swift; sourceTree = SOURCE_ROOT; };
 		9039504E2129D93800BF048D /* BounceAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceAnimationController.swift; sourceTree = "<group>"; };
 		903950502129E1DA00BF048D /* SlideOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideOutAnimationController.swift; sourceTree = "<group>"; };
+		90395054212AE1EC00BF048D /* LandscapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeViewController.swift; sourceTree = "<group>"; };
+		90395074212AFAB600BF048D /* FadeOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeOutAnimationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				9039501F2122FD4100BF048D /* SearchViewController.swift */,
+				90395054212AE1EC00BF048D /* LandscapeViewController.swift */,
 				903950532129E20000BF048D /* Detail Pop-up Screen */,
 				903950522129E1F300BF048D /* Animations */,
 			);
@@ -153,6 +158,7 @@
 			children = (
 				903950502129E1DA00BF048D /* SlideOutAnimationController.swift */,
 				9039504E2129D93800BF048D /* BounceAnimationController.swift */,
+				90395074212AFAB600BF048D /* FadeOutAnimationController.swift */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
@@ -241,9 +247,11 @@
 			files = (
 				903950202122FD4100BF048D /* SearchViewController.swift in Sources */,
 				9039504B2128594900BF048D /* DimmingPresentationController.swift in Sources */,
+				90395075212AFAB600BF048D /* FadeOutAnimationController.swift in Sources */,
 				9039503021230EF800BF048D /* SearchResult.swift in Sources */,
 				9039503A21234FA100BF048D /* SearchResultCell.swift in Sources */,
 				9039504F2129D93800BF048D /* BounceAnimationController.swift in Sources */,
+				90395055212AE1EC00BF048D /* LandscapeViewController.swift in Sources */,
 				90395049212854B900BF048D /* DetailViewController.swift in Sources */,
 				9039501E2122FD4100BF048D /* AppDelegate.swift in Sources */,
 				9039504D2129D1A400BF048D /* GradientView.swift in Sources */,
