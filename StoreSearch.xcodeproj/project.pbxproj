@@ -24,6 +24,7 @@
 		903950512129E1DA00BF048D /* SlideOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903950502129E1DA00BF048D /* SlideOutAnimationController.swift */; };
 		90395055212AE1EC00BF048D /* LandscapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90395054212AE1EC00BF048D /* LandscapeViewController.swift */; };
 		90395075212AFAB600BF048D /* FadeOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90395074212AFAB600BF048D /* FadeOutAnimationController.swift */; };
+		90395077212C46C500BF048D /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90395076212C46C500BF048D /* Search.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		903950502129E1DA00BF048D /* SlideOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideOutAnimationController.swift; sourceTree = "<group>"; };
 		90395054212AE1EC00BF048D /* LandscapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeViewController.swift; sourceTree = "<group>"; };
 		90395074212AFAB600BF048D /* FadeOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeOutAnimationController.swift; sourceTree = "<group>"; };
+		90395076212C46C500BF048D /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				9039503221230F2100BF048D /* Model */,
 				9039503321230F3B00BF048D /* View */,
 				9039503121230F0A00BF048D /* Controller */,
+				9039507A212C517900BF048D /* Networking */,
 				9039503421230F5C00BF048D /* Utilities */,
 				903950292122FD4300BF048D /* Info.plist */,
 			);
@@ -172,6 +175,14 @@
 			path = "Detail Pop-up Screen";
 			sourceTree = "<group>";
 		};
+		9039507A212C517900BF048D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				90395076212C46C500BF048D /* Search.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -245,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90395077212C46C500BF048D /* Search.swift in Sources */,
 				903950202122FD4100BF048D /* SearchViewController.swift in Sources */,
 				9039504B2128594900BF048D /* DimmingPresentationController.swift in Sources */,
 				90395075212AFAB600BF048D /* FadeOutAnimationController.swift in Sources */,

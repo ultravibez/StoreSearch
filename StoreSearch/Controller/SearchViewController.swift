@@ -23,11 +23,8 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Vairables and constants
-    private var searchResults = [SearchResult]()
-    private var hasSearched = false
-    private var isLoading = false
-    private var dataTask: URLSessionDataTask?
     private var landscapeVC: LandscapeViewController?
+    private let search = Search()
     
     // MARK: - View handler Methods
     override func viewDidLoad() {
@@ -78,7 +75,7 @@ class SearchViewController: UIViewController {
         
         landscapeVC = storyboard!.instantiateViewController(withIdentifier: "LandscapeViewController") as? LandscapeViewController
         if let controller = landscapeVC {
-            controller.searchResults = searchResults
+            controller.search = search
             controller.view.frame = view.bounds
             controller.view.alpha = 0
             
@@ -109,38 +106,6 @@ class SearchViewController: UIViewController {
         }
     }
     
-    // MARK: - Private Methods
-    private func iTunesURL(searchText: String, category: Int) -> URL {
-        
-        let kind: String
-        switch category {
-        case 1: kind = "musicTrack"
-        case 2: kind = "software"
-        case 3: kind = "ebook"
-        default: kind = ""
-        }
-        
-        // encodes the text, changing SPACE with %20 instead.
-        // making it a valid url
-        let encodedText = searchText.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        
-        let urlString = "https://itunes.apple.com/search?" + "term=\(encodedText)&limit=200&entity=\(kind)"
-        
-        let url = URL(string: urlString)
-        return url!
-    }
-    
-    private func parse(data: Data) -> [SearchResult] {
-        do {
-            let decoder = JSONDecoder()
-            let result = try decoder.decode(ResultArray.self, from: data)
-            return result.results
-        } catch {
-            print("JSON Error: \(error)")
-            return []
-        }
-    }
-    
     // MARK: - Alert
     private func showNetworkError() {
         let alert = UIAlertController(title: "Whoops...", message: "There was an error accessing the iTunes Store. Please try again.", preferredStyle: .alert)
@@ -160,64 +125,16 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     private func performSearch() {
-        if !searchBar.text!.isEmpty {
-            searchBar.resignFirstResponder()
-            
-            // if there is an active data task, this cancels it,
-            // making sure that no old searches can ever get in the
-            // way of the new search.
-            dataTask?.cancel()
-            
-            // changing isLoading to true to activate the spinner
-            isLoading = true
-            tableView.reloadData()
-
-            hasSearched = true
-            searchResults = []
-            
-            let url = self.iTunesURL(searchText: searchBar.text!, category: segmentedControl.selectedSegmentIndex)
-            
-            let session = URLSession.shared
-            
-            dataTask = session.dataTask(with: url, completionHandler: {
-                data, response, error in
-                
-                // error
-                if let error = error as NSError?, error.code == -999 {
-                    print("Failure! \(error)")
-                    return
-                    
-                // no error and valid statusCode
-                } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    
-                    if let data = data {
-                        self.searchResults = self.parse(data: data)
-                        self.searchResults.sort(by: < )
-                        
-                        DispatchQueue.main.async {
-                            self.isLoading = false
-                            self.tableView.reloadData()
-                        }
-                        // we use return to avoid getting to the error popup below
-                        return
-                    }
-                    
-                // no error but invalid statusCode
-                } else {
-                    print("Failure! \(response!)")
-                }
-                
-                // the code execustion reaches here only if something
-                // went wrong.
-                DispatchQueue.main.async {
-                    self.hasSearched = false
-                    self.isLoading = false
-                    self.tableView.reloadData()
-                    self.showNetworkError()
-                }
-            })
-            dataTask?.resume()
-        }
+        search.performSearch(for: searchBar.text!, category: segmentedControl.selectedSegmentIndex, completion: {
+            success in
+            if !success {
+                self.showNetworkError()
+            }
+            self.tableView.reloadData()
+        })
+        
+        tableView.reloadData()
+        searchBar.resignFirstResponder()
     }
     
     // extends the search bar to the status bar area, making it grey.
@@ -231,35 +148,35 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isLoading {
+        if search.isLoading {
             // returns the loading cell
             return 1
-        } else if !hasSearched {
+        } else if !search.hasSearched {
             // no search has been done so returns nothing
             return 0
-        } else if searchResults.count == 0 {
+        } else if search.searchResults.count == 0 {
             // search has been done but no results
             return 1
         } else {
-            return searchResults.count
+            return search.searchResults.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if isLoading {
+        if search.isLoading {
             let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.loadingCell, for: indexPath)
             
             // look up the spinnner by it's tag
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
             spinner.startAnimating()
             return cell
-        } else if searchResults.count == 0 {
+        } else if search.searchResults.count == 0 {
             return tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.nothingFoundCell, for: indexPath)
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
             
-            let searchResult = searchResults[indexPath.row]
+            let searchResult = search.searchResults[indexPath.row]
             cell.configure(for: searchResult)
             return cell
         }
@@ -276,14 +193,14 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         if segue.identifier == "ShowDetail" {
             let detailViewController = segue.destination as! DetailViewController
             let indexPath = sender as! IndexPath
-            let searchResult = searchResults[indexPath.row]
+            let searchResult = search.searchResults[indexPath.row]
             detailViewController.searchResult = searchResult
         }
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         // disables selecting a non existing cell
-        if searchResults.count == 0 || isLoading {
+        if search.searchResults.count == 0 || search.isLoading {
             return nil
         } else {
             return indexPath
