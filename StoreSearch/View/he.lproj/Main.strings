@@ -1,0 +1,36 @@
+
+/* Class = "UILabel"; text = "Artist Name"; ObjectID = "B0f-SV-Nbe"; */
+"B0f-SV-Nbe.text" = "Artist Name";
+
+/* Class = "UISegmentedControl"; Ma9-Zz-A5Q.segmentTitles[0] = "All"; ObjectID = "Ma9-Zz-A5Q"; */
+"Ma9-Zz-A5Q.segmentTitles[0]" = "הכל";
+
+/* Class = "UISegmentedControl"; Ma9-Zz-A5Q.segmentTitles[1] = "Music"; ObjectID = "Ma9-Zz-A5Q"; */
+"Ma9-Zz-A5Q.segmentTitles[1]" = "מוזיקה";
+
+/* Class = "UISegmentedControl"; Ma9-Zz-A5Q.segmentTitles[2] = "Software"; ObjectID = "Ma9-Zz-A5Q"; */
+"Ma9-Zz-A5Q.segmentTitles[2]" = "אפליקצייה";
+
+/* Class = "UISegmentedControl"; Ma9-Zz-A5Q.segmentTitles[3] = "E-books"; ObjectID = "Ma9-Zz-A5Q"; */
+"Ma9-Zz-A5Q.segmentTitles[3]" = "ספר אלקטרוני";
+
+/* Class = "UIButton"; normalTitle = "$9.99"; ObjectID = "NJL-B3-e2P"; */
+"NJL-B3-e2P.normalTitle" = "$9.99";
+
+/* Class = "UILabel"; text = "Type:"; ObjectID = "UjL-KV-n0Z"; */
+"UjL-KV-n0Z.text" = "סוג:";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "Vob-VS-cEn"; */
+"Vob-VS-cEn.text" = "Name";
+
+/* Class = "UISearchBar"; placeholder = "App name, artist, song, album, e-book."; ObjectID = "XGt-fy-l2H"; */
+"XGt-fy-l2H.placeholder" = "שם אפליקציה, זמר, שיר, ספר אלקטרוני...";
+
+/* Class = "UILabel"; text = "Kind Value"; ObjectID = "kmj-mq-IBy"; */
+"kmj-mq-IBy.text" = "Kind Value";
+
+/* Class = "UILabel"; text = "Genre:"; ObjectID = "vwr-tA-TPO"; */
+"vwr-tA-TPO.text" = "ז׳אנר:";
+
+/* Class = "UILabel"; text = "Genre Value"; ObjectID = "yXr-Ty-QY7"; */
+"yXr-Ty-QY7.text" = "Genre Value";
