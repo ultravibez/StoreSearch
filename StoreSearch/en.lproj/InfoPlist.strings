@@ -5,3 +5,5 @@
   Created by Matan Dahan on 22/08/2018.
   Copyright © 2018 Matan Dahan. All rights reserved.
 */
+
+CFBundleDisplayName = "Store Search";

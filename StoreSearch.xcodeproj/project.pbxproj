@@ -27,6 +27,7 @@
 		903950B0212D935600BF048D /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903950B2212D935600BF048D /* SearchResultCell.xib */; };
 		903950BE212D996C00BF048D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 903950C0212D996C00BF048D /* Localizable.strings */; };
 		903950C5212DB78900BF048D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 903950C7212DB78900BF048D /* InfoPlist.strings */; };
+		9039510821342DF100BF048D /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9039510721342DF100BF048D /* MenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		903950C2212D9AE800BF048D /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		903950C6212DB78900BF048D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		903950C8212DB78B00BF048D /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9039510721342DF100BF048D /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +101,6 @@
 				9039503321230F3B00BF048D /* View */,
 				9039503121230F0A00BF048D /* Controller */,
 				9039507A212C517900BF048D /* Networking */,
-				9039503421230F5C00BF048D /* Utilities */,
 				903950292122FD4300BF048D /* Info.plist */,
 				903950C7212DB78900BF048D /* InfoPlist.strings */,
 				903950C0212D996C00BF048D /* Localizable.strings */,
@@ -110,10 +111,12 @@
 		9039503121230F0A00BF048D /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9039501F2122FD4100BF048D /* SearchViewController.swift */,
+				9039501D2122FD4100BF048D /* AppDelegate.swift */,
 				90395054212AE1EC00BF048D /* LandscapeViewController.swift */,
-				903950532129E20000BF048D /* Detail Pop-up Screen */,
+				9039510721342DF100BF048D /* MenuViewController.swift */,
+				9039501F2122FD4100BF048D /* SearchViewController.swift */,
 				903950522129E1F300BF048D /* Animations */,
+				903950532129E20000BF048D /* Detail Pop-up Screen */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -135,17 +138,9 @@
 				903950212122FD4100BF048D /* Main.storyboard */,
 				9039504421273D7D00BF048D /* UIImageView+DownloadImage.swift */,
 				9039504C2129D1A400BF048D /* GradientView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		9039503421230F5C00BF048D /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				9039501D2122FD4100BF048D /* AppDelegate.swift */,
 				903950242122FD4300BF048D /* Assets.xcassets */,
 			);
-			path = Utilities;
+			path = View;
 			sourceTree = "<group>";
 		};
 		9039503F212443B300BF048D /* Custom SearchResultCell */ = {
@@ -280,6 +275,7 @@
 				90395077212C46C500BF048D /* Search.swift in Sources */,
 				903950202122FD4100BF048D /* SearchViewController.swift in Sources */,
 				9039504B2128594900BF048D /* DimmingPresentationController.swift in Sources */,
+				9039510821342DF100BF048D /* MenuViewController.swift in Sources */,
 				90395075212AFAB600BF048D /* FadeOutAnimationController.swift in Sources */,
 				9039503021230EF800BF048D /* SearchResult.swift in Sources */,
 				9039503A21234FA100BF048D /* SearchResultCell.swift in Sources */,

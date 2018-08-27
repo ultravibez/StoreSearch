@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class DetailViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
@@ -25,9 +26,17 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
     @IBOutlet weak var priceButton: UIButton!
     
     // Variables
-    var searchResult: SearchResult!
+    var searchResult: SearchResult! {
+        didSet {
+            if isViewLoaded {
+                updateUI()
+            }
+        }
+    }
     var downloadTask: URLSessionDownloadTask?
     var dismissStyle = AnimationStyle.fade
+    var isPopup = false
+    var isFirstTime = true
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,23 +57,33 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // to avoid from gradiant color multiplying the opacity
-        // making it blacker than it actually is
-        // why not storyboard? because it makes it harder
-        // to see and edit the pop-up view.
-        view.backgroundColor = UIColor.clear
-        
         // change the view tint color
         view.tintColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1)
         
         // set rounded corners to the view
         popupView.layer.cornerRadius = 10
         
-        // create gestureRecognizer observer
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(close))
-        gestureRecognizer.cancelsTouchesInView = false
-        gestureRecognizer.delegate = self
-        view.addGestureRecognizer(gestureRecognizer)
+        if isPopup {
+            // create gestureRecognizer observer
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(close))
+            gestureRecognizer.cancelsTouchesInView = false
+            gestureRecognizer.delegate = self
+            view.addGestureRecognizer(gestureRecognizer)
+            
+            // to avoid from gradiant color multiplying the opacity
+            // making it blacker than it actually is
+            // why not storyboard? because it makes it harder
+            // to see and edit the pop-up view.
+            view.backgroundColor = UIColor.clear
+        } else {
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "LandscapeBackground")!)
+            popupView.isHidden = true
+            
+            if let displayName = Bundle.main.localizedInfoDictionary?["CFBundleDisplayName"] as? String {
+                title = displayName
+            }
+        }
+
         
         // check that you got a valid searchResult
         if searchResult != nil {
@@ -139,6 +158,27 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
         if let largeURL = URL(string: searchResult.imageLarge) {
             downloadTask = artworkImageView.loadImage(url: largeURL)
         }
+        
+        if isFirstTime {
+            popupView.alpha = 0
+            UIView.animate(withDuration: 1.0, animations: {
+                self.popupView.alpha = 1
+            }, completion: { _ in
+                self.popupView.isHidden = false
+                self.isFirstTime = false
+            })
+        } else {
+            popupView.isHidden = false
+
+        }
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowMenu" {
+            let controller = segue.destination as! MenuViewController
+            controller.delegate = self
+        }
     }
 }
 
@@ -148,5 +188,29 @@ extension DetailViewController: UIGestureRecognizerDelegate {
     // to the gestureRecognizer observer.
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return (touch.view === self.view)
+    }
+}
+
+extension DetailViewController: MenuViewControllerDelegate {
+    
+    func menuViewControllerSendEmail(_ controller: MenuViewController) {
+        dismiss(animated: true) {
+            if MFMailComposeViewController.canSendMail() {
+                let controller = MFMailComposeViewController()
+                controller.setSubject(NSLocalizedString("Support Request", comment: "Email subject"))
+                controller.setToRecipients(["ultravibez@hotmail.com"])
+                controller.modalPresentationStyle = .formSheet
+                controller.mailComposeDelegate = self
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+    
+}
+
+extension DetailViewController: MFMailComposeViewControllerDelegate {
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        dismiss(animated: true, completion: nil)
     }
 }
