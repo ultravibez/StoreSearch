@@ -12,6 +12,10 @@ typealias SearchComplete = (Bool) -> Void
 
 class Search {
     
+    deinit {
+        print("deinit \(self)")
+    }
+    
     enum State {
         case notSearchedYet
         case loading

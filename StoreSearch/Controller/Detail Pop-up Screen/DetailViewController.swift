@@ -36,7 +36,6 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
     var downloadTask: URLSessionDownloadTask?
     var dismissStyle = AnimationStyle.fade
     var isPopup = false
-    var isFirstTime = true
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -159,18 +158,7 @@ class DetailViewController: UIViewController, UIViewControllerTransitioningDeleg
             downloadTask = artworkImageView.loadImage(url: largeURL)
         }
         
-        if isFirstTime {
-            popupView.alpha = 0
-            UIView.animate(withDuration: 1.0, animations: {
-                self.popupView.alpha = 1
-            }, completion: { _ in
-                self.popupView.isHidden = false
-                self.isFirstTime = false
-            })
-        } else {
-            popupView.isHidden = false
-
-        }
+        popupView.isHidden = false
     }
     
     // MARK: - Navigation
@@ -199,7 +187,7 @@ extension DetailViewController: MenuViewControllerDelegate {
                 let controller = MFMailComposeViewController()
                 controller.setSubject(NSLocalizedString("Support Request", comment: "Email subject"))
                 controller.setToRecipients(["ultravibez@hotmail.com"])
-                controller.modalPresentationStyle = .formSheet
+                controller.modalPresentationStyle = .fullScreen
                 controller.mailComposeDelegate = self
                 self.present(controller, animated: true, completion: nil)
             }
